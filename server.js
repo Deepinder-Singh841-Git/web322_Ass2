@@ -6,8 +6,8 @@ I declare that this assignment is my own work in accordance with Seneca  Academi
 Name: Deepinder Singh______
 Student ID: 159466234___
 Date: 06/02/2025_______
-Cyclic Web App URL: _______________________________________________________
-GitHub Repository URL: https://github.com/Deepinder-Singh841-Git/Deepinder-Singh841-Git.github.io.git
+vercel Web App URL: https://deepweb-two.vercel.app/about_______________________________________________________
+GitHub Repository URL: https://github.com/Deepinder-Singh841-Git/Deep841Git.github.io.git
 
 ********************************************************************************/ 
 
