@@ -7,7 +7,7 @@ Name: Deepinder Singh______
 Student ID: 159466234___
 Date: 06/02/2025_______
 Cyclic Web App URL: _______________________________________________________
-GitHub Repository URL: ______________________________________________________
+GitHub Repository URL: https://github.com/Deepinder-Singh841-Git/Deepinder-Singh841-Git.github.io.git
 
 ********************************************************************************/ 
 
