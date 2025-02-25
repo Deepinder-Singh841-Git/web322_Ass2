@@ -33,6 +33,19 @@ const storeService = {
     });
   },
 
+  addItem(itemData) {
+    return new Promise((resolve, reject) => {
+      if(itemData.published === undefined) {
+        itemData.published = false;
+      }else{
+        itemData.published = true;
+      }
+      itemData.id = items.length + 1;
+      items.push(itemData);
+      resolve(itemData);
+    });
+  },
+
   getPublishedItems() {
     return new Promise((resolve, reject) => {
       const publishedItems = items.filter(item => item.published === true); // Filter items by 'published' property
@@ -58,3 +71,4 @@ const storeService = {
 };
 
 module.exports = storeService;
+module.exports = {addItem};
