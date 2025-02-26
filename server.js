@@ -21,7 +21,6 @@ const { addItem } = require("./store-service");
 const { getItemsByCategory } = require("./store-service");
 const { getItemsByMinDate  } = require("./store-service");
 const { getItemById  } = require("./store-service");
-const { getAllItems } = require("./store-service");
 
 const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
