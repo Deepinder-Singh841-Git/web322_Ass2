@@ -34,7 +34,17 @@ function getItemById(id) {
     });
 }
 
-module.exports = { addItem, getItemsByCategory, getItemsByMinDate, getItemById };
+function getAllItems() {
+    return new Promise((resolve, reject) => {
+        if (items.length > 0) {
+            resolve(items); // Resolve the promise with items data
+        } else {
+            reject("No items available.");
+        }
+    });
+}
+
+module.exports = { addItem, getItemsByCategory, getItemsByMinDate, getItemById, getAllItems };
 
 const storeService = {
     // Initialize function to load data from JSON files
@@ -52,17 +62,6 @@ const storeService = {
         } catch (err) {
             throw new Error("Unable to load data: " + err.message);
         }
-    },
-
-    // Function to get all items
-    getAllItems() {
-        return new Promise((resolve, reject) => {
-            if (items.length > 0) {
-                resolve(items); // Resolve the promise with items data
-            } else {
-                reject("No items available.");
-            }
-        });
     },
     
     // Function to get published items
@@ -89,41 +88,6 @@ const storeService = {
         });
     },
 
-    // Function to get items by category
-    getItemsByCategory(category) {
-        return new Promise((resolve, reject) => {
-            const filteredItems = items.filter(item => item.category == category);
-            if (filteredItems.length > 0) {
-                resolve(filteredItems);
-            } else {
-                reject("No results returned.");
-            }
-        });
-    },
-
-    // Function to get items by minimum date
-    getItemsByMinDate(minDateStr) {
-        return new Promise((resolve, reject) => {
-            const filteredItems = items.filter(item => new Date(item.postDate) >= new Date(minDateStr));
-            if (filteredItems.length > 0) {
-                resolve(filteredItems);
-            } else {
-                reject("No results returned.");
-            }
-        });
-    },
-
-    // Function to get an item by ID
-    getItemById(id) {
-        return new Promise((resolve, reject) => {
-            const item = items.find(i => i.id === id);
-            if (item) {
-                resolve(item);
-            } else {
-                reject("No result returned.");
-            }
-        });
-    }
 };
 // Correct module exports
 module.exports = storeService;
