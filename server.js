@@ -18,6 +18,9 @@ const multer = require("multer");
 const cloudinary = require('cloudinary').v2;
 const streamifier = require('streamifier');
 const { addItem } = require("./store-service");
+const { getItemsByCategory } = require("./store-service");
+const { getItemsByMinDate  } = require("./store-service");
+const { getItemById  } = require("./store-service");
 
 const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
