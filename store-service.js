@@ -4,6 +4,17 @@ const fs = require('fs').promises; // Use fs.promises to work with async/await
 let items = [];
 let categories = [];
 
+function addItem(itemData) {
+    return new Promise((resolve, reject) => {
+        itemData.published = itemData.published ? true : false;
+        itemData.id = items.length + 1;
+        items.push(itemData);
+        resolve(itemData);
+    });
+}
+
+module.exports = { addItem };
+
 const storeService = {
     // Initialize function to load data from JSON files
     async initialize() {
@@ -30,16 +41,6 @@ const storeService = {
             } else {
                 reject("No items available.");
             }
-        });
-    },
-
-    // Function to add a new item
-    addItem(itemData) {
-        return new Promise((resolve, reject) => {
-            itemData.published = itemData.published ? true : false;
-            itemData.id = items.length + 1;
-            items.push(itemData);
-            resolve(itemData);
         });
     },
 
@@ -125,6 +126,5 @@ const storeService = {
     }
 };
 module.exports = { addItem, getItemsByCategory, getItemsByMinDate, getItemById };
-module.exports = { addItem };
 // Correct module exports
 module.exports = storeService;
