@@ -34,7 +34,17 @@ function getItemById(id) {
     });
 }
 
-module.exports = { addItem, getItemsByCategory, getItemsByMinDate, getItemById };
+function getAllItems() {
+    return new Promise((resolve, reject) => {
+        if (items.length > 0) {
+            resolve(items);
+        } else {
+            reject("No items found.");
+        }
+    });
+}
+
+module.exports = { addItem, getItemsByCategory, getItemsByMinDate, getItemById, getAllItems };
 
 const storeService = {
     // Initialize function to load data from JSON files
