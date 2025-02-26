@@ -11,24 +11,28 @@ GitHub Repository URL: https://github.com/Deepinder-Singh841-Git/web322_Ass2.git
 
 ********************************************************************************/ 
 
-
 const express = require('express');
 const path = require('path');
-const myStore = require('./store-service');
+const myStore = require('./store-service'); // Ensure correct file reference
 const multer = require("multer");
 const cloudinary = require('cloudinary').v2;
 const streamifier = require('streamifier');
+
 const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
 
+// Cloudinary configuration
 cloudinary.config({
     cloud_name: 'dfst9j74g', 
-    api_key: '332178947425628', 
-    api_secret: '<your_api_secret>', // Click 'View API Keys' above to copy your API secret
+        api_key: '332178947425628', 
+        api_secret: 'y7M6d7_J5Feh4jbgowjFyOT4pw8', // Replace with your actual API Secret
     secure: true
 });
 
 const upload = multer();
+
+// Middleware to parse request bodies
+app.use(express.urlencoded({ extended: true }));
 
 // Serve static files from the "public" folder
 app.use(express.static('public'));
@@ -56,53 +60,74 @@ app.get('/shop', (req, res) => {
 });
 
 // Route for "/items"
-app.get('/items', (req, res) => {
-    myStore.getPublishedItems()
-        .then(items => res.json(items))
-        .catch(err => res.status(500).json({ message: err }));
+app.get("/items", (req, res) => {
+    let { category, minDate } = req.query;
+    
+    if (category) {
+        getItemsByCategory(category)
+            .then(data => res.json(data))
+            .catch(err => res.status(404).send(err));
+    } else if (minDate) {
+        getItemsByMinDate(minDate)
+            .then(data => res.json(data))
+            .catch(err => res.status(404).send(err));
+    } else {
+        res.json(items);
+    }
 });
 
-app.get('/items/add', (req, res) => {
-    res.send('/views/addItem.html');
+
+// Serve the add item form
+app.get("/items/add", (req, res) => {
+    res.sendFile(path.join(__dirname, "views", "addItem.html"));
 });
 
-app.post('/items/add', upload.single('image'), (req, res) => {
-    if(req.file){
+// Handle adding a new item with optional image upload
+app.post("/items/add", upload.single("featureImage"), (req, res) => {
+    if (req.file) {
         let streamUpload = (req) => {
             return new Promise((resolve, reject) => {
-                let stream = cloudinary.uploader.upload_stream(
-                    (error, result) => {
-                        if (result) {
-                            resolve(result);
-                        } else {
-                            reject(error);
-                        }
+                let stream = cloudinary.uploader.upload_stream((error, result) => {
+                    if (result) {
+                        resolve(result);
+                    } else {
+                        reject(error);
                     }
-                );
-    
+                });
                 streamifier.createReadStream(req.file.buffer).pipe(stream);
             });
         };
-    
+
         async function upload(req) {
             let result = await streamUpload(req);
-            console.log(result);
             return result;
         }
-    
-        upload(req).then((uploaded)=>{
+
+        upload(req).then((uploaded) => {
             processItem(uploaded.url);
+        }).catch(() => {
+            processItem("");
         });
-    }else{
+    } else {
         processItem("");
     }
-     
-    function processItem(imageUrl){
+
+    function processItem(imageUrl) {
         req.body.featureImage = imageUrl;
-    
-        // TODO: Process the req.body and add it as a new Item before redirecting to /items
-    } 
-});    
+        addItem(req.body).then(() => {
+            res.redirect("/items");
+        }).catch(err => {
+            res.status(500).send(err);
+        });
+    }
+});
+
+app.get("/item/:id", (req, res) => {
+    getItemById(req.params.id)
+        .then(item => res.json(item))
+        .catch(err => res.status(404).send(err));
+});
+
 
 // Route for "/categories"
 app.get('/categories', (req, res) => {
