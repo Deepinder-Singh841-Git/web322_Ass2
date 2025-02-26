@@ -34,17 +34,7 @@ function getItemById(id) {
     });
 }
 
-function getAllItems() {
-    return new Promise((resolve, reject) => {
-        if (items.length > 0) {
-            resolve(items); // Resolve the promise with items data
-        } else {
-            reject("No items available.");
-        }
-    });
-}
-
-module.exports = { addItem, getItemsByCategory, getItemsByMinDate, getItemById, getAllItems };
+module.exports = { addItem, getItemsByCategory, getItemsByMinDate, getItemById };
 
 const storeService = {
     // Initialize function to load data from JSON files
@@ -63,6 +53,16 @@ const storeService = {
             throw new Error("Unable to load data: " + err.message);
         }
     },
+
+    getAllItems() {
+    return new Promise((resolve, reject) => {
+        if (items.length > 0) {
+            resolve(items); // Resolve the promise with items data
+        } else {
+            reject("No items available.");
+        }
+    });
+},
     
     // Function to get published items
     getPublishedItems() {
