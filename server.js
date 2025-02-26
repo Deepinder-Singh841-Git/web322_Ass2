@@ -115,6 +115,8 @@ app.post("/items/add", upload.single("featureImage"), (req, res) => {
 
     function processItem(imageUrl) {
         req.body.featureImage = imageUrl;
+        
+        // Ensure `addItem` is called correctly
         addItem(req.body).then(() => {
             res.redirect("/items");
         }).catch(err => {
