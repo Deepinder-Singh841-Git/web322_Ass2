@@ -21,6 +21,7 @@ const { addItem } = require("./store-service");
 const { getItemsByCategory } = require("./store-service");
 const { getItemsByMinDate  } = require("./store-service");
 const { getItemById  } = require("./store-service");
+const { getAllItems } = require("./store-service");
 
 const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
@@ -64,17 +65,27 @@ app.get('/shop', (req, res) => {
 });
 
 // Route for "/items"
-app.get("/items", (req, res) => {
-    let { category } = req.query;
+app.get("/items", async (req, res) => {
+    try {
+        let { category, minDate } = req.query;
 
-    if (category) {
-        getItemsByCategory(category)
-            .then(data => res.json(data))
-            .catch(err => res.status(404).send(err));
-    } else {
-        res.json(items); // Return all items if no category is specified
+        if (category) {
+            let itemsByCategory = await getItemsByCategory(category);
+            return res.json(itemsByCategory);
+        }
+
+        if (minDate) {
+            let itemsByDate = await getItemsByMinDate(minDate);
+            return res.json(itemsByDate);
+        }
+
+        let allItems = await getAllItems();
+        return res.json(allItems);
+    } catch (error) {
+        res.status(500).send("Internal Server Error: " + error);
     }
 });
+
 
 // Serve the add item form
 app.get("/items/add", (req, res) => {
