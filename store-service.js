@@ -13,7 +13,28 @@ function addItem(itemData) {
     });
 }
 
-module.exports = { addItem };
+function getItemsByCategory(category) {
+    return new Promise((resolve, reject) => {
+        let filteredItems = items.filter(item => item.category == category);
+        filteredItems.length ? resolve(filteredItems) : reject("No results returned");
+    });
+}
+    
+function getItemsByMinDate(minDateStr) {
+    return new Promise((resolve, reject) => {
+        let filteredItems = items.filter(item => new Date(item.postDate) >= new Date(minDateStr));
+        filteredItems.length ? resolve(filteredItems) : reject("No results returned");
+    });
+}
+
+function getItemById(id) {
+    return new Promise((resolve, reject) => {
+        let item = items.find(item => item.id == id);
+        item ? resolve(item) : reject("No result returned");
+    });
+}
+
+module.exports = { addItem, getItemsByCategory, getItemsByMinDate, getItemById };
 
 const storeService = {
     // Initialize function to load data from JSON files
@@ -41,27 +62,6 @@ const storeService = {
             } else {
                 reject("No items available.");
             }
-        });
-    },
-
-    getItemsByCategory(category) {
-        return new Promise((resolve, reject) => {
-            let filteredItems = items.filter(item => item.category == category);
-            filteredItems.length ? resolve(filteredItems) : reject("No results returned");
-        });
-    },
-    
-    getItemsByMinDate(minDateStr) {
-        return new Promise((resolve, reject) => {
-            let filteredItems = items.filter(item => new Date(item.postDate) >= new Date(minDateStr));
-            filteredItems.length ? resolve(filteredItems) : reject("No results returned");
-        });
-    },
-    
-    getItemById(id) {
-        return new Promise((resolve, reject) => {
-            let item = items.find(item => item.id == id);
-            item ? resolve(item) : reject("No result returned");
         });
     },
     
@@ -125,6 +125,5 @@ const storeService = {
         });
     }
 };
-module.exports = { addItem, getItemsByCategory, getItemsByMinDate, getItemById };
 // Correct module exports
 module.exports = storeService;
