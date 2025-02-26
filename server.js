@@ -65,21 +65,16 @@ app.get('/shop', (req, res) => {
 
 // Route for "/items"
 app.get("/items", (req, res) => {
-    let { category, minDate } = req.query;
-    
+    let { category } = req.query;
+
     if (category) {
         getItemsByCategory(category)
             .then(data => res.json(data))
             .catch(err => res.status(404).send(err));
-    } else if (minDate) {
-        getItemsByMinDate(minDate)
-            .then(data => res.json(data))
-            .catch(err => res.status(404).send(err));
     } else {
-        res.json(items);
+        res.json(items); // Return all items if no category is specified
     }
 });
-
 
 // Serve the add item form
 app.get("/items/add", (req, res) => {
