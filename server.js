@@ -17,6 +17,7 @@ const myStore = require('./store-service'); // Ensure correct file reference
 const multer = require("multer");
 const cloudinary = require('cloudinary').v2;
 const streamifier = require('streamifier');
+const { addItem } = require("./store-service");
 
 const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
