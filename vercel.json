@@ -14,5 +14,10 @@
       "src": "/(.*)",
       "dest": "server.js"
     }
-  ]
+  ],
+  "env": {
+    "CLOUD_NAME": "dfst9j74g",
+    "API_KEY": "332178947425628",
+    "API_SECRET": "y7M6d7_J5Feh4jbgowjFyOT4pw8"
+  }
 }
