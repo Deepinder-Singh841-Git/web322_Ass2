@@ -31,7 +31,7 @@ const HTTP_PORT = process.env.PORT || 8080;
 cloudinary.config({
     cloud_name: 'dfst9j74g', 
         api_key: '332178947425628', 
-        api_secret: 'y7M6d7_J5Feh4jbgowjFyOT4pw8', // Replace with your actual API Secret
+        api_secret: 'y7M6d7_J5Feh4jbgowjFyOT4pw8', 
     secure: true
 });
 
